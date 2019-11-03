@@ -1,0 +1,12 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "example:better_furnace",
+    "uvlock": false
+  },
+  "variants": {
+    "normal": [
+      {}
+    ]
+  }
+}

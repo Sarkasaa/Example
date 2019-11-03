@@ -1,9 +1,10 @@
-package de.sarkasaa.example;
+package de.sarkasaa.example.block;
 
+import de.sarkasaa.example.Content;
+import de.sarkasaa.example.block.ContainerBetterFurnace;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.IContainerProvider;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
@@ -18,7 +19,7 @@ public class TileEntityBetterFurnace extends TileEntity implements ITickableTile
     public final ItemStackHandler inventory = new ItemStackHandler(5);
 
     public TileEntityBetterFurnace() {
-        super(Registry.tileEntityBetterFurnace);
+        super(Content.tileEntityBetterFurnace);
     }
 
     @Override

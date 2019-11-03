@@ -1,5 +1,6 @@
-package de.sarkasaa.example;
+package de.sarkasaa.example.block;
 
+import de.sarkasaa.example.Example;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;

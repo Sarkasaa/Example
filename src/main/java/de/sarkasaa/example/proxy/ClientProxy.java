@@ -1,13 +1,13 @@
 package de.sarkasaa.example.proxy;
 
-import de.sarkasaa.example.GUIBetterFurnace;
-import de.sarkasaa.example.Registry;
+import de.sarkasaa.example.Content;
+import de.sarkasaa.example.block.GUIBetterFurnace;
 import net.minecraft.client.gui.ScreenManager;
 
 public class ClientProxy implements IProxy {
 
     @Override
     public void init() {
-        ScreenManager.registerFactory(Registry.containerBetterFurnace, GUIBetterFurnace::new);
+        ScreenManager.registerFactory(Content.containerBetterFurnace, GUIBetterFurnace::new);
     }
 }
