@@ -1,7 +1,7 @@
 package de.sarkasaa.example.items;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.enchantment.Enchantment;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
@@ -9,6 +9,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
@@ -17,6 +18,7 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootParameters;
 
+import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,6 +31,11 @@ public class DebuggerItem extends Item {
     }
 
     @Override
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        tooltip.add(new StringTextComponent(this.getMode(stack).name()).setStyle(new Style().setColor(TextFormatting.GRAY)));
+    }
+
+    @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack stack = playerIn.getHeldItem(handIn);
         if (playerIn.isSneaking()) {
@@ -36,9 +43,9 @@ public class DebuggerItem extends Item {
             mode = (byte) ((mode + 1) % Mode.values().length);
             this.setMode(stack, mode);
             playerIn.sendStatusMessage(new StringTextComponent(this.getMode(stack).name()).setStyle(new Style().setColor(TextFormatting.BLUE)), true);
-
+            return new ActionResult<>(ActionResultType.SUCCESS, stack);
         }
-        return new ActionResult<>(ActionResultType.SUCCESS, stack);
+        return new ActionResult<>(ActionResultType.FAIL, stack);
     }
 
     public Mode getMode(ItemStack stack) {
@@ -63,6 +70,7 @@ public class DebuggerItem extends Item {
         return mode;
     }
 
+
     @Override
     public void onCreated(ItemStack stack, World worldIn, PlayerEntity playerIn) {
         if (!stack.getOrCreateTag().contains("mode")) {
@@ -85,7 +93,6 @@ public class DebuggerItem extends Item {
             for (int i = 0; i < 10000; i++) {
                 LootContext.Builder loottable = new LootContext.Builder(world).withParameter(LootParameters.POSITION, context.getPos()).withParameter(LootParameters.TOOL, mode.stack).withLuck(1F);
                 List<ItemStack> list = state.getDrops(loottable);
-
                 for (ItemStack stack : list)
                     set.add(stack.getItem().getRegistryName().toString());
 
@@ -96,7 +103,6 @@ public class DebuggerItem extends Item {
             for (String drop : set) {
                 player.sendStatusMessage(new StringTextComponent("         " + drop), false);
             }
-
 
 
             player.sendStatusMessage(new StringTextComponent("using: ").appendText(mode.name()).setStyle(new Style().setBold(true)), false);
